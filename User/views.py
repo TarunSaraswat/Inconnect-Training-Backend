@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.views import View
 from itsdangerous import Serializer
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from tensorboard import errors
@@ -9,67 +11,63 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-@api_view(['GET','PUT'])
-def getUpdateUser(request,user_id):
-    if request.method == "GET":
+class Get_Update_Patient(APIView):
+    def get(self,request,user_id):
         try:
             user=Patients.objects.get(id=user_id)
         except Patients.DoesNotExist:
             return HttpResponse(status=404)
-            # return Response({'status':404,'message':'User does not exist'})
         
         result=Patients.objects.get(id=user_id)
         serializer=PatientSerializer(result)
         return Response(serializer.data)
 
-    elif request.method == "PUT":
+    def put(self,request,user_id):
         try:
             user=Patients.objects.get(id=user_id)
         except Patients.DoesNotExist:
             return HttpResponse(status=404)
-            # return Response({'status':404,'message':'User does not exist'})
-            
-        serializer=PatientSerializer(user,data=request.data)
-        data = {}
+
+        data={"email": request.data.get("email"),
+	        "name": request.data.get("name"),
+	        "city": request.data.get("city"),
+	        "state": request.data.get("state"),
+	        "zipcode": request.data.get("zipcode")}    
+        serializer=PatientSerializer(user,data=data)
+        
         if serializer.is_valid():
             serializer.save()
             data["success"]="updated successfully"
             
-            return HttpResponse(status=200)
-            # return Response({'status':200,'message':'Created Successfully'})
-        
+            return HttpResponse(status=200)     
         return HttpResponse(status=400)
-        # return Response({'status':400,'message':'Given data is wrong'})
 
-@api_view(['POST'])
-def addUserPatient(request):
-    serializer=PatientSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    else:
-        return HttpResponse(status=400)
-        # return Response({'status':400,'errors':serializer.errors,'message':'Given data is wrong'})
-        
-    return HttpResponse(status=201)
-    # return Response({'status':201,'message':'Created Successfully'})
+class Register_Patient(APIView):
+    def post(self,request,*args):
+        data={	"email": request.data.get("email"),
+	        "name": request.data.get("name"),
+	        "city": request.data.get("city"),
+	        "state": request.data.get("state"),
+	        "zipcode": request.data.get("zipcode")}
+        serializer=PatientSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return HttpResponse(status=400)
+       
+        return HttpResponse(status=201)
 
-# @api_view(['POST'])
-# def addUpdateDoctor(request):
-#     serializer=DoctorSerializer(data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#     else:
-#         return Response({'status':400,'errors':serializer.errors,'message':'given data is wrong'})
-        
-#     return Response(serializer.data)
-
-@api_view(['POST'])
-def addUserDoctor(request):
-    serializer=DoctorSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    else:
-        return HttpResponse(status=400)
-        # return Response({'status':400,'errors':serializer.errors,'message':'Given data is wrong'})
-        
-    return HttpResponse(status=201)
+class Register_Doctor(APIView):
+    def post(self,request,*args):
+        data={	"email": request.data.get("email"),
+	        "name": request.data.get("name"),
+	        "city": request.data.get("city"),
+	        "state": request.data.get("state"),
+	        "zipcode": request.data.get("zipcode")}
+        serializer=DoctorSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return HttpResponse(status=400)
+       
+        return HttpResponse(status=201)
