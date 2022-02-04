@@ -42,7 +42,7 @@ def getUpdateUser(request,user_id):
         # return Response({'status':400,'message':'Given data is wrong'})
 
 @api_view(['POST'])
-def addUser(request):
+def addUserPatient(request):
     serializer=PatientSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -63,3 +63,13 @@ def addUser(request):
         
 #     return Response(serializer.data)
 
+@api_view(['POST'])
+def addUserDoctor(request):
+    serializer=DoctorSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        return HttpResponse(status=400)
+        # return Response({'status':400,'errors':serializer.errors,'message':'Given data is wrong'})
+        
+    return HttpResponse(status=201)

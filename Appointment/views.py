@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from sqlalchemy import null
@@ -49,26 +50,25 @@ def createAppointment(request):
     print(doctorService)
     doctor=null
     for doc in doctorAtZipcode:
-        print(doc.id)
         for docService in doctorService:
-            print(docService.doctor_id)
             if str(doc.id)==str(docService.doctor_id):
                 doctor=doc
-    print(doctor)
+
     if doctor is null:
         return HttpResponse(status=400)
     try:
-        bookings=Meet.objects.get(assigned_doctor=doctor.id).order_by('booked')
+        bookings=Meet.objects.get(assigned_doctor=doctor.id).values_list('booked',flat=True)
     except:
         bookings=None
+    print(bookings,"are these")
     if bookings is None:
+        booked=datetime.datetime.now()
+    elif bookings.booked.replace(tzinfo=None) < datetime.datetime.now().replace(tzinfo=None):
         booked=datetime.datetime.now()
     else:
         booked=bookings[len(bookings)-1].booked
         hours_added = datetime.timedelta(hours = 1)
         booked=booked+hours_added
-    
-    print(doctor)
         
     meet=Meet.objects.create(patient_id=patient,booked=booked,assigned_doctor=doctor,service=service)
     meet.save()
@@ -146,14 +146,63 @@ def getAppointmentByTime(request):
     if request.method == "GET":
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-        booked=body["booked"]
- 
         try:
-            user=Meet.objects.filter(booked=booked)
+            start_datetime=body["start_datetime"]
+            end_datetime=body["end_datetime"]
+        
+        except:
+            return HttpResponse(status=400)
+
+        try:
+            user=Meet.objects.filter(booked__range=[start_datetime,end_datetime]).values_list('assigned_doctor',flat=True)
         except Meet.DoesNotExist:
             return HttpResponse(status=404)
         
         # result=Meet.objects.filter(patient_id=patient_id,service=service)
-        serializer=MeetSerializer(user,many=True)
-        return Response(serializer.data)
+    doctor_list=[]
+    user=list(set(user))
+    for u in user:
+        doctor_list.append(Doctors.objects.filter(id=u).values_list('name',flat=True))
+        
+    result={str(user[i]):str(doctor_list[i][0]) for i in range (len(user))}
+    return Response(result)
     
+@api_view(['GET'])
+def getAppointmentByService(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    try:
+        service=body["service"]
+        
+    except:
+        return HttpResponse(status=400)
+
+    try:
+        user=Meet.objects.filter(service=service).values_list('assigned_doctor',flat=True)    
+    except Meet.DoesNotExist:
+        return HttpResponse(status=404)
+    
+    doctor_list=[]
+    user=list(set(user))
+    for u in user:
+        doctor_list.append(Doctors.objects.filter(id=u).values_list('name',flat=True))
+        
+    result={str(user[i]):str(doctor_list[i][0]) for i in range (len(user))}
+    
+    return Response(result)
+
+@api_view(['GET'])
+def getAppointmentByZipcode(request):
+    try:
+        user=Meet.objects.all().values_list('assigned_doctor',flat=True)
+    except Meet.DoesNotExist:
+        return HttpResponse(status=404)
+    
+    doctor_list=[]
+    for u in user:
+        doctor_list.append(Doctors.objects.filter(id=u).values_list('zipcode',flat=True))
+    
+    doctor_list=list(set(doctor_list))
+    result={i+1:str(doctor_list[i][0]) for i in range (len(doctor_list))}
+    
+    return Response(result)

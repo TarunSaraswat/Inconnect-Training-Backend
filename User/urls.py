@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns=[
     path('<int:user_id>',views.getUpdateUser),
-    path('',views.addUser)
+    path('doctor',views.addUserDoctor),
+    path('patient',views.addUserPatient)
 ]

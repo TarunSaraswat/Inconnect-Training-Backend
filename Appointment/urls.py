@@ -6,5 +6,7 @@ urlpatterns=[
     path('',views.createAppointment),
     path('updateTime',views.updateMeet),
     path('rating',views.addRating),
-    path('time',views.getAppointmentByTime)
+    path('time',views.getAppointmentByTime),
+    path('service',views.getAppointmentByService),
+    path('zipcode',views.getAppointmentByZipcode)
 ]
