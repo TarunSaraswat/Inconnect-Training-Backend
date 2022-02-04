@@ -48,27 +48,38 @@ def createAppointment(request):
         return HttpResponse(status=404)
     print(doctorAtZipcode)
     print(doctorService)
-    doctor=null
+    doctor=0
     for doc in doctorAtZipcode:
         for docService in doctorService:
             if str(doc.id)==str(docService.doctor_id):
                 doctor=doc
-
-    if doctor is null:
+                break
+        else:
+            continue
+            
+        break
+    
+    print(doctor)
+    if doctor==0:
         return HttpResponse(status=400)
     try:
-        bookings=Meet.objects.get(assigned_doctor=doctor.id).values_list('booked',flat=True)
+        print("tried")
+        bookings=Meet.objects.filter(assigned_doctor=str(doctor)).values_list('booked',flat=True)
+        print("tried2")
     except:
-        bookings=None
-    print(bookings,"are these")
-    if bookings is None:
+        bookings=datetime.datetime.now()
+    
+    try:
+        bookings=max(bookings)
+    except:
+        bookings=datetime.datetime.now()
+        
+    booked=bookings
+    hours_added = datetime.timedelta(hours = 1)
+    booked=booked+hours_added
+    
+    if booked.replace(tzinfo=None) < datetime.datetime.now().replace(tzinfo=None):
         booked=datetime.datetime.now()
-    elif bookings.booked.replace(tzinfo=None) < datetime.datetime.now().replace(tzinfo=None):
-        booked=datetime.datetime.now()
-    else:
-        booked=bookings[len(bookings)-1].booked
-        hours_added = datetime.timedelta(hours = 1)
-        booked=booked+hours_added
         
     meet=Meet.objects.create(patient_id=patient,booked=booked,assigned_doctor=doctor,service=service)
     meet.save()
