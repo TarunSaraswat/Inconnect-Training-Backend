@@ -1,7 +1,6 @@
 from unicodedata import name
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from sqlalchemy import null
 from User import serializers
 from User.models import Doctors,Patients
 from .models import DoctorService, Meet
