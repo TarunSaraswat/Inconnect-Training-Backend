@@ -8,6 +8,8 @@ from tensorboard import errors
 from .models import Doctors,Patients
 from .serializers import PatientSerializer,DoctorSerializer
 from django.http import HttpResponse
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 
 # Create your views here.
 
@@ -41,6 +43,8 @@ class Get_Update_Patient(APIView):
             
             return HttpResponse(status=200)     
         return HttpResponse(status=400)
+    authentication_classes=[BasicAuthentication]
+    permission_classes=[IsAdminUser]
 
 class Register_Patient(APIView):
     def post(self,request,*args):
@@ -58,6 +62,8 @@ class Register_Patient(APIView):
         return HttpResponse(status=201)
 
 class Register_Doctor(APIView):
+    authentication_classes=[BasicAuthentication]
+    permission_classes=[IsAdminUser]  
     def post(self,request,*args):
         data={	"email": request.data.get("email"),
 	        "name": request.data.get("name"),
