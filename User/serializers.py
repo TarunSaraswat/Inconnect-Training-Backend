@@ -30,7 +30,6 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model=Doctors
         fields=['email','name','city','state','zipcode']
-        # exclude=['id']
         
         
 class PatientSerializer(serializers.ModelSerializer):

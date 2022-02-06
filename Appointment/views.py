@@ -83,7 +83,6 @@ class Create_Appointment(APIView):
         except Meet.DoesNotExist:
             return HttpResponse(status=404)
 
-        # result=Meet.objects.filter(patient_id=patient_id,service=service)
         serializer = MeetSerializer(user, many=True)
         return Response(serializer.data)
 
@@ -161,7 +160,6 @@ class Get_By_Time(APIView):
         except Meet.DoesNotExist:
             return HttpResponse(status=404)
 
-        # result=Meet.objects.filter(patient_id=patient_id,service=service)
         doctor_list = []
         user = list(set(user))
         for u in user:
