@@ -13,6 +13,7 @@ from django.core.serializers import serialize
 from rest_framework.views import APIView
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 # Create your views here.
 
 
@@ -22,6 +23,9 @@ class Create_Appointment(APIView):
     def post(self, request):
         patient_id = request.data.get('patient_id')
         service = request.data.get("service")
+        start_datetime = request.data.get("start_datetime")
+        start_datetime=datetime.datetime.strptime(start_datetime,"%Y-%m-%dt%H:%M:%S")
+        end_datetime=start_datetime+datetime.timedelta(hours=1)
         patient = Patients.objects.get(id=patient_id)
         try:
             doctorAtZipcode = Doctors.objects.filter(zipcode=patient.zipcode)
@@ -32,44 +36,48 @@ class Create_Appointment(APIView):
             doctorService = DoctorService.objects.filter(service=service)
         except:
             return HttpResponse(status=404)
-        print(doctorAtZipcode)
-        print(doctorService)
-        doctor = 0
+
+        doctor = []
         for doc in doctorAtZipcode:
             for docService in doctorService:
                 if str(doc.id) == str(docService.doctor_id):
-                    doctor = doc
+                    doctor.append(doc.id)
+
+        if doctor == []:
+            return HttpResponse(status=404)
+        try:
+            bookings=[]
+            for d in doctor:
+
+                flag=False
+                doc_meet=Meet.objects.filter(assigned_doctor=d)
+            
+                for meet in doc_meet:
+                    
+                    if (meet.booked+datetime.timedelta(hours=1))<start_datetime:
+                        continue
+                    elif meet.booked>end_datetime:
+                        continue
+                    else:
+                        flag=True
+                        break
+                if flag == True:
+                    continue
+                else:
+                    bookings.append(Doctors.objects.get(id=d))
                     break
-            else:
-                continue
-
-            break
-
-        print(doctor)
-        if doctor == 0:
-            return HttpResponse(status=400)
-        try:
-            print("tried")
-            bookings = Meet.objects.filter(assigned_doctor=str(
-                doctor)).values_list('booked', flat=True)
-            print("tried2")
         except:
-            bookings = datetime.datetime.now()
+            return Response(status=404)
 
-        try:
-            bookings = max(bookings)
-        except:
-            bookings = datetime.datetime.now()
+        print("bookings",bookings)
+        if bookings == []:
+            return Response(status=404)
 
-        booked = bookings
-        hours_added = datetime.timedelta(hours=1)
-        booked = booked+hours_added
-
-        if booked.replace(tzinfo=None) < datetime.datetime.now().replace(tzinfo=None):
-            booked = datetime.datetime.now()
-
+        else:
+            assigned_doctor=bookings[0]
+        print(assigned_doctor,"doc")
         meet = Meet.objects.create(
-            patient_id=patient, booked=booked, assigned_doctor=doctor, service=service)
+            patient_id=patient, booked=start_datetime, assigned_doctor=assigned_doctor, service=service)
         meet.save()
 
         return HttpResponse(status=201)
