@@ -46,16 +46,16 @@ class DoctorViewSet(viewsets.ModelViewSet):
 #     def post(self,request,*args,**kwargs):
 #         return self.create(request,*args,**kwargs)
 
-class Register_Doctor(GenericAPIView,ListModelMixin,CreateModelMixin):
-    queryset = Doctors.objects.all()
-    serializer_class = DoctorSerializer
-    permission_classes = [IsAdminUser]
+# class Register_Doctor(GenericAPIView,ListModelMixin,CreateModelMixin):
+#     queryset = Doctors.objects.all()
+#     serializer_class = DoctorSerializer
+#     permission_classes = [IsAdminUser]
     
-    def post(self,request,*args,**kwargs):
-        return self.create(request,*args,**kwargs)
+#     def post(self,request,*args,**kwargs):
+#         return self.create(request,*args,**kwargs)
     
-    def get(self,request,*args,**kwargs):
-        return self.list(request,*args,**kwargs)
+#     def get(self,request,*args,**kwargs):
+#         return self.list(request,*args,**kwargs)
     
 
     

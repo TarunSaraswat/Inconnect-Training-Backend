@@ -24,7 +24,7 @@ from django.db.models import Q
 # Create your views here.
 
 
-class Create_Appointment(APIView):
+class CreateAppointment(APIView):
     authentication_classes=[BasicAuthentication]
     permission_classes=[IsAuthenticated]
     def post(self, request):
@@ -153,16 +153,16 @@ class Create_Appointment(APIView):
         return Response(serializer.data)
 
 
-class GetUpdateMeet(GenericAPIView,ListModelMixin,RetrieveModelMixin,UpdateModelMixin):
-    queryset = Meet.objects.all()
-    serializer_class = MeetSerializer
-    permission_classes = [IsAuthenticated]
+# class GetUpdateMeet(GenericAPIView,ListModelMixin,RetrieveModelMixin,UpdateModelMixin):
+#     queryset = Meet.objects.all()
+#     serializer_class = MeetSerializer
+#     permission_classes = [IsAuthenticated]
 
-    def get(self, request,*args,**kwargs):
-        return self.retrieve(request,*args,**kwargs)
+#     def get(self, request,*args,**kwargs):
+#         return self.retrieve(request,*args,**kwargs)
     
-    def put(self,request,*args,**kwargs):
-        return self.update(request,*args,**kwargs)
+#     def put(self,request,*args,**kwargs):
+#         return self.update(request,*args,**kwargs)
 
 
 
@@ -191,7 +191,7 @@ class MeetViewSet(viewsets.ModelViewSet):
         pass
 
 
-class Get_By_Zipcode(APIView):
+class GetByZipcode(APIView):
     permission_classes=[IsAuthenticated]
     def get(self,request):
         zipcode=request.data.get('zipcode')
