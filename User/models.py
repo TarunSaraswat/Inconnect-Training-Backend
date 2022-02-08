@@ -12,7 +12,7 @@ class Patients(models.Model):
     zipcode = models.IntegerField()
     
     def __str__(self) -> str:
-        return str(self.id)
+        return str("Id:"+str(self.id)+" Name:"+self.name)
     
 class Doctors(models.Model):
     id = models.AutoField(primary_key=True)
@@ -23,4 +23,4 @@ class Doctors(models.Model):
     zipcode = models.IntegerField()
 
     def __str__(self) -> str:
-        return str(self.id)
+        return str("Id:"+str(self.id)+" Name:"+self.name)
