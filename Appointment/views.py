@@ -2,7 +2,6 @@ from unicodedata import name
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from Appointment.filters import MeetFilter
-from User import serializers
 from User.models import Doctors, Patients
 from .models import DoctorService, Meet
 from django.http import HttpResponse
@@ -12,15 +11,14 @@ import datetime
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework.mixins import   ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin
-import json
 from django.core.serializers import serialize
 from rest_framework.views import APIView
 from rest_framework.authentication import BasicAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
 from rest_framework import viewsets
-from rest_framework import generics
-from django.db.models import Q
+# from rest_framework import filters
+# from rest_framework import generics
+# from django.db.models import Q
 # Create your views here.
 
 

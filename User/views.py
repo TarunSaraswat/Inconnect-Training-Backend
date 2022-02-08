@@ -2,10 +2,10 @@ from User.filter import DoctorFilter, PatientFilter
 from .models import Doctors,Patients
 from .serializers import PatientSerializer,DoctorSerializer
 from rest_framework import viewsets
-from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.mixins import   ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin
+# from rest_framework.mixins import   ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin
+# from rest_framework.generics import GenericAPIView
     
 class PatientViewSet(viewsets.ModelViewSet):
     queryset = Patients.objects.all()
