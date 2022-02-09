@@ -9,6 +9,7 @@ class PatientFilter(FilterSet):
             'name': ['exact']
         }
 
+
 class DoctorFilter(FilterSet):
     class Meta:
         model = Doctors

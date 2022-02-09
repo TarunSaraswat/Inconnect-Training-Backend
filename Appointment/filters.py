@@ -1,6 +1,7 @@
 from django_filters.rest_framework import FilterSet
 from Appointment.models import Meet
 
+
 class MeetFilter(FilterSet):
     class Meta:
         model = Meet
