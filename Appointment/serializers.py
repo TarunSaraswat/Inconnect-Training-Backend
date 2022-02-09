@@ -8,4 +8,4 @@ class MeetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meet
-        fields = ["patient_id", "booked", "service", "assigned_doctor", "rating"]
+        fields = ["patient_id", "start_datetime","end_datetime", "service", "assigned_doctor", "rating"]

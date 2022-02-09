@@ -5,7 +5,6 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('meetapi', views.MeetViewSet, basename='meet')
 urlpatterns = [
-    path('create', views.CreateAppointment.as_view()),
     path('rating/<int:pk>', views.AddRating.as_view()),
     path('zipcode', views.GetByZipcode.as_view()),
     path('', include(router.urls)),

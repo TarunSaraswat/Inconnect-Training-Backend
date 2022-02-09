@@ -7,7 +7,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Meet(models.Model):
     patient_id = models.ForeignKey(Patients, on_delete=models.CASCADE)
-    booked = models.DateTimeField()
+    start_datetime = models.DateTimeField()
+    end_datetime = models.DateTimeField()
     assigned_doctor = models.ForeignKey(Doctors, on_delete=models.CASCADE)
     rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=5)
     service = models.CharField(max_length=200)

@@ -6,7 +6,8 @@ class MeetFilter(FilterSet):
     class Meta:
         model = Meet
         fields = {
-            'booked': ['lt', 'gt'],
+            'start_datetime': ['lt'],
+            'end_datetime': ['gt'],
             'service': ['exact'],
             'rating': ['gt', 'lt']
         }
