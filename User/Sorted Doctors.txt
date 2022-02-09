@@ -1,0 +1,11 @@
+
+Updated Ratings List at: 2022-02-09 20:39:20.960817
+('Doctor Shikha', 0)
+('Doctor Anjesh', 0)
+('Doctor Vijay', 0)
+('Doctor Karan', 0)
+('Doctor Komal', 0)
+('Doctor Shruti', 0)
+('Doctor Tarun', 5.0)
+('Doctor Rahul', 5.0)
+('Doctor Arun', 5.0)

@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'User',
     'Appointment',
     'django_filters',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
