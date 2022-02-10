@@ -1,6 +1,6 @@
 from django.urls import path, include
-from User import views
 from rest_framework.routers import DefaultRouter
+from User import views
 
 router = DefaultRouter(trailing_slash=False)
 router.register('patientapi', views.PatientViewSet, basename='patient')

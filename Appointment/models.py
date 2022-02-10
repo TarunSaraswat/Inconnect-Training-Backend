@@ -1,9 +1,7 @@
 from django.db import models
-from User.models import Patients, Doctors
 from django.core.validators import MinValueValidator, MaxValueValidator
+from User.models import Patients, Doctors
 
-
-# Create your models here.
 
 class Meet(models.Model):
     patient_id = models.ForeignKey(Patients, on_delete=models.CASCADE)

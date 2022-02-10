@@ -47,7 +47,9 @@ class PatientFailModelTestCase(TestCase):
 
     @unittest.expectedFailure
     def test_fail_patient_insertion_two(self):
-        "zipcode field missing in patients object"
+        """
+        zipcode field missing in patients object
+        """
         patient_fail = Patients(email="Saqnjeev@gmail.com", name="Sanjeev Rathore", city="Lucknow",
                                 state="Uttar Pradesh")
         patient_fail.save()
@@ -56,12 +58,16 @@ class PatientFailModelTestCase(TestCase):
 class DoctorFailModelTestCase(TestCase):
     @unittest.expectedFailure
     def test_fail_doctor_insertion_one(self):
-        """giving only one field in doctors"""
+        """
+        giving only one field in doctors
+        """
         doctor_fail = Doctors(email="Saqnjeev@gmail.com")
         doctor_fail.save()
 
     @unittest.expectedFailure
     def test_fail_doctor_insertion_two(self):
-        """zipcode field missing in doctors object"""
+        """
+        zipcode field missing in doctors object
+        """
         doctor_fail = Doctors(email="Saqnjeev@gmail.com", name="Sanjeev Rathore", city="Lucknow", state="Uttar Pradesh")
         doctor_fail.save()

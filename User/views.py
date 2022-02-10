@@ -20,16 +20,15 @@ class PatientViewSet(viewsets.ModelViewSet):
 
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
-    
+
     def create(self, request, *args, **kwargs):
-        serializer=PatientSerializer(data=request.data)
+        serializer = PatientSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
         else:
             return Response(status=400)
-        
+
         return Response(status=201)
-            
 
 
 class DoctorViewSet(viewsets.ModelViewSet):

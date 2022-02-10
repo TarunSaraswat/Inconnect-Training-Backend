@@ -6,9 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from Appointment.filters import MeetFilter
-from User.models import Doctors, Patients
 from Appointment.models import DoctorService, Meet
 from Appointment.serializers import MeetSerializer
+from User.models import Doctors, Patients
 
 
 class AddRating(GenericAPIView, UpdateModelMixin):

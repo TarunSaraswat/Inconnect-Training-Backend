@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 
 
 class Patients(models.Model):

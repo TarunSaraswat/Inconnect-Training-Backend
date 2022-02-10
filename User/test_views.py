@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class DoctorViewsetTest(APITestCase):
 
     @classmethod
-    def setUpTestData(self) -> None:
+    def setUpTestData(cls) -> None:
         Doctors.objects.create(email="Saqnjeev@gmail.com", name="Sanjeev Rathore", city="Lucknow",
                                state="Uttar Pradesh", zipcode="204101")
         Doctors.objects.create(email="Rahul@gmail.com", name="Rahul", city="Ghaziabad",
@@ -44,7 +44,7 @@ class DoctorViewsetTest(APITestCase):
             "state": "state",
             "zipcode": "204101"
         }
-        response = self.client.post('/user/doctorapi',data)
+        response = self.client.post('/user/doctorapi', data)
         self.assertEqual(response.status_code, 201)
 
     def test_view_url_posts_wrong_data(self):
@@ -55,12 +55,12 @@ class DoctorViewsetTest(APITestCase):
             my_admin = User.objects.get(is_superuser=True)
             self.client.force_login(user=my_admin)
             data = {
-                "email": "Shrutigmail.com",
+                "email": "email.com",
                 "name": "Doctor Shruti",
                 "city": "city",
                 "state": "state",
                 "zipcode": "204101"
             }
-            response = self.client.post('/user/doctorapi',data)
+            response = self.client.post('/user/doctorapi', data)
             self.assertEqual(response.status_code, 201)
         self.assertEqual(response.status_code, 400)

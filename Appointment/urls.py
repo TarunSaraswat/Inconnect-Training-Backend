@@ -1,6 +1,6 @@
 from django.urls import path, include
-from Appointment import views
 from rest_framework.routers import DefaultRouter
+from Appointment import views
 
 router = DefaultRouter()
 router.register('meetapi', views.MeetViewSet, basename='meet')

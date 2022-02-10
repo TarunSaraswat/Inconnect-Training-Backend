@@ -1,6 +1,5 @@
-from itsdangerous import Serializer
 from rest_framework import serializers
-from .models import Meet
+from Appointment.models import Meet
 
 
 class MeetSerializer(serializers.ModelSerializer):
@@ -8,4 +7,4 @@ class MeetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meet
-        fields = ["patient_id", "start_datetime","end_datetime", "service", "assigned_doctor", "rating"]
+        fields = ["patient_id", "start_datetime", "end_datetime", "service", "assigned_doctor", "rating"]
